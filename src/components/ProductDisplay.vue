@@ -1,44 +1,32 @@
 <template>
-  <div>
-    <div class="container">
-    <div class="product-main">
-      <div class="card" v-for="image in images" :key="image.name">
-        <img :src="image.name" class="image1" />
-      </div>
-    </div>
-    
-    <div class="product-photos">
-      <div>
-        <img src="../assets/danger.jpg" class="image2"/>
-      </div>
-    </div>
-    <div class="product-specification">
-      <div class="product__info">
-          <div class="title">
-            <h1>MacBook Pro</h1>
-          </div>
-          <div class="price">
-            RWF <span>7.93</span>
-          </div>
-          <div class="description">
-            <h3>SPECIFICATIONS</h3>
-            <ul>
-              <li>Apples are nutricious</li>
-              <li>Apples may be good for weight loss</li>
-              <li>Apples may be good for bone health</li>
-              <li>They're linked to a lowest risk of diabetes</li>
-            </ul>
-          </div>
+ <div class="content">
+        <div class="product">
+            <div class="product-img">
+                <img src="../assets/danger.jpg" alt="" />
+                <img src="../assets/yellow.jpg" alt="" />
+                <img src="../assets/pink.jpg" alt="" />
+            </div>
+            <div class="product-img-main">
+                <img src="../assets/danger.jpg" alt="" />
+            </div>
+            <div>
+                <h3 class="title">Isabune</h3>
+                <p class="price">1000<span>Rwf</span></p>
+                <h3 class="title">Specification</h3>
+                <p>
+                    Lorem ipsum dolor sit amet
+                    consectetur adipisicing elit.
+                    Voluptate hic quo vitae perferendis.
+                </p>
+            </div>
+        </div>
+        <div>
+            <h3 class="title">Description</h3>
+            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptas ipsum reiciendis ex culpa corrupti
+                pariatur in cumque veniam error esse. Asperiores veniam sunt necessitatibus ipsam animi ducimus possimus
+                repellendus dolores.</p>
         </div>
     </div>
-    <div class="product-description">
-      <div class="description__info"> 
-        <h1>Description</h1>
-        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-      </div>
-    </div>
-  </div>
-  </div>
   
 </template>
 
@@ -73,118 +61,84 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-  .container {
-    display: grid;
-    grid-template-columns: 30% auto 30%;
-    // grid-template-rows: 1fr;
-    grid-gap: 15px;
-    padding: 10px;
+<style scoped>
+  p{
+    text-align: justify;
+    font-weight: 400;
+}
 
-    @media only screen and (max-width: 600px) {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+.product{
+    display: flex;
+    flex-direction: column-reverse;
+}
 
-    padding: 0;
+.product-img{
+    display: flex;
+    justify-content: space-evenly;
+}
+.product-img img{
+    object-fit: cover;
+    max-width: 100px;
+    height: 70px;
+    border-radius: 7px;
+}
+
+.product-img-main{
+    margin: auto;
+}
+.product-img-main img{
+    object-fit: cover;
+    max-height: 300px;
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.title{
+    text-transform: uppercase;
+    color: #103e51;
+}
+.price{
+    font-size: 50px;
+    border: solid;
+    letter-spacing: 20px;
+    margin: 0;
+    padding: 0 15px;
+    color: #103e51;
+    border-radius: 12px;
+}
+
+.price span{
+    font-size: 15px;
+}
+
+@media(min-width: 900px){
+    .content{
+        width: 75%;
+        margin: auto;
     }
-  }
-  .product-main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    grid-gap: 5px;
-    text-align: center;
-
-    @media only screen and (max-width: 600px) {
-      grid-row: 1 / -1;
-    }
-  }
-  .image1 {
-    width:100%;
-    height:100%;
-  }
-  .image2 {
-    width:100%;
-    height:100%;
-  }
-  .card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    max-width: 200px;
-  }
-  .card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-  }
-  .product-specification {
-    padding: 20px;
-    .product__info {
-      padding: 0.8em 0;
-    }
-
-    .title {
-      h1 {
-        margin-bottom: 1px;
-        color: #4c4c4c;
-        font-size: 1.5em;
-        font-weight: 900;
-      }
-    };
-
-    .price {
-      margin: 1.5em 0;
-      color: #90EE90;
-      font-size: 1.2em;
-
-      span {
-        padding-left: 0.15em;
-        font-size: 2.9em;
-      }
-    }
-
-    .description {
-      clear: left;
-      margin: 2em 0;
-
-      h3 {
-        margin-bottom: 1em;
-        color: #4c4c4c;
-      }
-
-      ul {
-        font-size: 1em;
-        list-style: disc;
-        margin-left: 1em;
-      }
-
-      li {
-        text-indent: -0.6em;
-        margin-bottom: 0.5em;
-      }
-    }
-  }
-  .product-photos {
-
-    @media only screen and (max-width: 600px) {
-      background-color: blue;
+    .product{
+        flex-direction: row;
+        justify-content: space-evenly;
+        height: 60vh;
     }
     
-  }
-  .product-description {
-    grid-column: 1 / 3;
-    .description__info {
-
-      h1{
-        margin-bottom: 1px;
-        color: #4c4c4c;
-        font-size: 1.5em;
-        font-weight: 900;
-      }
-      p {
-        width: 60%;
-        font-size: 1em;
-        color: inherit;
-        margin: 20px 0;
-      }
+    .product-img{
+        flex-direction: column;
+        justify-content: space-evenly;
+        margin: 20px;
     }
-  }
+    .product-img img{
+        max-height: 200px;
+        margin: 10px 0;
+    }
+    
+    .product-img-main{
+        margin: auto 20px;
+    }
+    .product-img-main img{
+        max-height: 500px;
+        min-width: 400px;
+        border-radius: 10px;
+    }
+}
 </style>

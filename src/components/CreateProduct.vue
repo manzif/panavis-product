@@ -4,7 +4,7 @@
         <form class="form-content">
             <div class='form-group'>
                 <label class="form-label">Name</label>
-                <input class="form-input" />
+                <input class="form-input" v-model="name" />
             </div>
             <div class='form-group product-img'>
                 <label class="form-label" for="files">Photos</label>
@@ -21,47 +21,49 @@
                             @change="previewImage">
                             
                     </div>
-                    <div class="product-img-display" v-for="(image, key) in images" :key="key">
-                        <img
-                        class="preview" :ref="'image'"
-                        tyle="width:70px; height:60px"
+                    <div class="product-img-display" >
+                        <span v-for="(image, key) in images" :key="key">
+                            <img
+                         :ref="'image'"
                         />
+                        <div class="remove-container">
+                            <a class="remove" v-on:click="removeFile( key )"><i class="fa fa-times"></i></a>
+                        </div>
+                        </span>
+                        
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <label class="form-label">Specification</label>
                 <div class="product-spec">
-                    <input class="form-input" />
+                    <input class="form-input"  v-model="spec"/>
                     <input class="form-input" />
                     <button class='btn btn-sm'>+</button>
                 </div>
             </div>
             <div class='form-group'>
                 <label class="form-label">Description</label>
-                <textarea class="form-input-area"></textarea>
+                <textarea class="form-input-area" v-model="description"></textarea>
             </div>
             <div class="form-group">
                 <label class="form-label">Price</label>
-                <input class="form-input" />
+                <input class="form-input" v-model="price"/>
             </div>
-            <button class="btn">Save</button>
+            <button class="btn" @click.prevent="addProduct">Save</button>
         </form>
     </div>
 
 </template>
 
 <script>
-// import { mapActions } from 'vuex'
+import axios from 'axios'
 
 export default {
  name: 'CreateProduct',
   data() {
     return {
       name: '',
-      photo1: null,
-      photo2: '',
-      photo3: '',
       images: [],
       attach: false,
       photo4: '',
@@ -72,34 +74,52 @@ export default {
     }
   },
   methods: { 
-    //   mapActions (['uploadImages']),
-            previewImage: function(e) {
-    //   let vm = this;
-      var selectedFiles = e.target.files;
-      for (let i = 0; i < selectedFiles.length; i++) {
-        console.log(selectedFiles[i]);
-        this.images.push(selectedFiles[i]);
-      }
+     previewImage: function(e) {
+        var selectedFiles = e.target.files;
+        for (let i = 0; i < selectedFiles.length; i++) {
+            this.images.push(selectedFiles[i]);
+        }
 
-      for (let i = 0; i < this.images.length; i++) {
-        let reader = new FileReader();
-       // eslint-disable-next-line no-unused-vars
-       reader.onload = (e) => {
-          this.$refs.image[i].src = reader.result;
+        for (let i = 0; i < this.images.length; i++) {
+            let reader = new FileReader();
+            // eslint-disable-next-line no-unused-vars
+        reader.onload = (e) => {
+            this.$refs.image[i].src = reader.result;
+            };
 
-          console.log(this.$refs.image[i].src);
-        };
+            reader.readAsDataURL(this.images[i]);
+        }
+    },
+    removeFile( key ){
+        this.images.splice( key, 1 );
+    },
+    addProduct() {
+      try {
+          Array.from(this.images).map(image => {
+              const formData = new FormData();
+              formData.append('image', image);
 
-        reader.readAsDataURL(this.images[i]);
+            return  axios.post('https://panavis.herokuapp.com/api/product', {
+            name: this.name,
+            formData,
+            specification: this.spec,
+            price: this.price,
+            description: this.description
+            })
+          })
+        this.name = null
+        this.spec = null
+        this.price = null
+        this.description = null
+
+      } catch (e) {
+        return e
       }
     }
 }
 }
 </script>
 <style scoped>
-*{
-    margin: 0;
-}
 
 .product{
     font-family: 'Balsamiq Sans', cursive;
@@ -123,7 +143,9 @@ export default {
     padding: 10px;
     box-sizing: border-box;
 }
-
+div.remove-container a:hover {
+    cursor: pointer;
+}
 .form-group{
     margin: 5px 0;
     padding: 5px;
@@ -193,7 +215,7 @@ export default {
     flex: 1;
     flex-direction: row;
     justify-content: space-between;
-    max-height: 70px;
+    max-height: 45px;
     overflow: hidden;
 }
 
@@ -201,6 +223,8 @@ export default {
     width: 30%;
     height: 75px;
     object-fit: contain;
+    border-radius: 10px;
+    margin: 0 5px;
 }
 
 .product-img-drag{
@@ -236,7 +260,7 @@ export default {
         justify-content: space-around;
     }
 
- .form-label{
+    .form-label{
         flex: 2;
      }
 
